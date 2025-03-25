@@ -10,6 +10,7 @@ import {
   getBytes,
   toUtf8String,
   HDNodeWallet,
+  Wallet,
 } from "ethers";
 import { split, combine } from "shamir-secret-sharing";
 
@@ -81,6 +82,14 @@ function App() {
     }
   };
 
+  const randomMnemonic = () => {
+    const wallet = Wallet.createRandom();
+    const mnem = wallet.mnemonic?.phrase;
+    if (mnem) {
+      setMnemonic(mnem);
+    }
+  };
+
   const handleShare1 = (input: string) => {
     setShare1(input);
 
@@ -130,13 +139,14 @@ function App() {
         <label>
           Mnemonic:{" "}
           <input
-            style={{ width: "400px" }}
+            style={{ width: "600px" }}
             type="text"
             value={mnemonic}
             onChange={(e) => handleMnemonic(e.target.value)}
             placeholder="e.g., test test test test test test test test test test test junk"
           />
         </label>
+        <button onClick={randomMnemonic}>Generate mnemonic</button>
       </div>
 
       <div>
