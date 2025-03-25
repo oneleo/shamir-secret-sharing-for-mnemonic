@@ -14,6 +14,8 @@ import {
 } from "ethers";
 import { split, combine } from "shamir-secret-sharing";
 
+const errorInvalidMnemonic = `Invalid mnemonic.`;
+
 function App() {
   const [mnemonic, setMnemonic] = useState<string>(
     "test test test test test test test test test test test junk"
@@ -78,15 +80,21 @@ function App() {
       Mnemonic.fromPhrase(input);
       setErrorMessage(``);
     } catch (error) {
-      setErrorMessage(`Invalid mnemonic.`);
+      setErrorMessage(errorInvalidMnemonic);
     }
   };
 
   const randomMnemonic = () => {
     const wallet = Wallet.createRandom();
     const mnem = wallet.mnemonic?.phrase;
-    if (mnem) {
-      setMnemonic(mnem);
+
+    if (!mnem) {
+      return;
+    }
+
+    setMnemonic(mnem);
+    if (errorMessage === errorInvalidMnemonic) {
+      setErrorMessage(``);
     }
   };
 
